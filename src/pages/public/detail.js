@@ -104,7 +104,7 @@ function Detail(){
 
 
     async function addCart(type) {
-        var sizeId = selectColor.id;
+        var sizeId = selectSize.id;
         if(selectSize == null){
             toast.error("Bạn chưa chọn kích thước sản phẩm")
             return;
@@ -113,7 +113,7 @@ function Detail(){
             "product": product,
             "color": selectColor,
             "size": selectSize,
-            "quantiy": document.getElementById("inputslcart").value
+            "quantity": document.getElementById("inputslcart").value
         }
         if (localStorage.getItem("product_cart") == null) {
             var listproduct = [];

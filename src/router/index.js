@@ -22,8 +22,8 @@ import Forgot from '../pages/public/forgot'
 import Blog from '../pages/public/blog'
 import BlogDetail from '../pages/public/blogdetail'
 import Account from '../pages/public/account'
-// import PublicDetailProduct from '../pages/public/detail'
-// import PublicProduct from '../pages/public/product'
+import Cart from '../pages/public/cart'
+import Product from '../pages/public/product'
 
 const publicRoutes = [
     { path: "/", component: index},
@@ -37,6 +37,8 @@ const publicRoutes = [
     { path: "/blog", component: Blog},
     { path: "/blogdetail", component: BlogDetail},
     { path: "/account", component: Account},
+    { path: "/cart", component: Cart},
+    { path: "/product", component: Product},
 ];
 
 
