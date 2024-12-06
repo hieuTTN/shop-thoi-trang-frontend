@@ -15,12 +15,13 @@ import layoutLogin from '../layout/user/loginlayout/login'
 import login from '../pages/public/login'
 import index from '../pages/public/index'
 import Detail from '../pages/public/detail'
-// import confirm from '../pages/public/confirm'
-// import PublicForgot from '../pages/public/forgot'
-// import PublicCheckOut from '../pages/public/checkout'
-// import PublicPayment from '../pages/public/payment'
-// import PublicAccount from '../pages/public/account'
-// import PublicCart from '../pages/public/cart'
+import PolicyContent from '../pages/public/about'
+import regis from '../pages/public/regis'
+import Confirm from '../pages/public/confirm'
+import Forgot from '../pages/public/forgot'
+import Blog from '../pages/public/blog'
+import BlogDetail from '../pages/public/blogdetail'
+import Account from '../pages/public/account'
 // import PublicDetailProduct from '../pages/public/detail'
 // import PublicProduct from '../pages/public/product'
 
@@ -29,6 +30,13 @@ const publicRoutes = [
     { path: "/index", component: index},
     { path: "/detail", component: Detail},
     { path: "/login", component: login},
+    { path: "/about", component: PolicyContent},
+    { path: "/regis", component: regis},
+    { path: "/confirm", component: Confirm},
+    { path: "/forgot", component: Forgot},
+    { path: "/blog", component: Blog},
+    { path: "/blogdetail", component: BlogDetail},
+    { path: "/account", component: Account},
 ];
 
 

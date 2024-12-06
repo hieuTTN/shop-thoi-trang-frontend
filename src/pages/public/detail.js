@@ -1,10 +1,5 @@
-import Footer from '../../layout/user/footer/footer'
-import banner from '../../assest/images/banner.jpg'
-import banner1 from '../../assest/images/banner1.png'
-import banner2 from '../../assest/images/banner2.jpg'
 import {getMethod,getMethodPostByToken,getMethodByToken, postMethodPayload, uploadMultipleFile, deleteMethod} from '../../services/request'
 import {formatMoney} from '../../services/money'
-import {loadBanner} from '../../services/banner'
 import { useState, useEffect } from 'react'
 import { Parser } from "html-to-react";
 import ReactPaginate from 'react-paginate';
