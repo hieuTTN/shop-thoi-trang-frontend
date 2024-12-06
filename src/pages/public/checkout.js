@@ -4,18 +4,70 @@ import { useState, useEffect } from 'react'
 import { Parser } from "html-to-react";
 import ReactPaginate from 'react-paginate';
 import {toast } from 'react-toastify';
+import Swal from 'sweetalert2'
+import Select from 'react-select';
 
 function Checkout(){
     const [diaChi, setDiaChi] = useState([]);
+    const [cart, setCart] = useState([]);
+    const [selectDiaChi, setSelectDiaChi] = useState(null);
+    const [tongTien, setTongTien] = useState(0);
+    const [maGiamGia, setMaGiamGia] = useState(null);
+    const [mess, setMess] = useState(null);
 
     useEffect(()=>{
-        getDiaChi();
+        getDiaChiUser();
+        loadCartCheckOut();
     }, []);
-    const getDiaChi = async() =>{
+    const getDiaChiUser = async() =>{
         var response = await getMethod('/api/user-address/user/my-address');
         var result = await response.json();
         setDiaChi(result)
     };
+
+    function getDiaChi(item){
+        setSelectDiaChi(item);
+        document.getElementById("stressName").value = item?.streetName+", "+item?.wards.name+", "+item?.wards.districts.name+", "+item?.wards.districts.province.name
+    }
+
+    function loadCartCheckOut() {
+        var listcart = localStorage.getItem("product_cart");
+        if (listcart == null) {
+            alert("Bạn chưa có sản phẩm nào trong giỏ hàng!");
+            window.location.replace("cart");
+            return;
+        }
+        var list = JSON.parse(localStorage.getItem("product_cart"));
+        if (list.length == 0) {
+            alert("Bạn chưa có sản phẩm nào trong giỏ hàng!");
+            window.location.replace("cart");
+        }
+        setCart(list)
+        var tongTien = 0;
+        for(var i=0; i< list.length; i++){
+            tongTien += list[i].quantity * list[i].product.price
+        }
+        setTongTien(tongTien)
+    }
+
+    async function loadVoucher() {
+        var code = document.getElementById("codevoucher").value
+        var url = 'http://localhost:8080/api/voucher/public/findByCode?code=' + code + '&amount=' + (tongTien - Number(20000));
+        const response = await fetch(url, {});
+        var result = await response.json();
+        if (response.status == 417) {
+            setMaGiamGia(null)
+            setMaGiamGia(null)
+            setMess(result.defaultMessage)
+            document.getElementById("totalfi").innerHTML = formatMoney(tongTien + 20000)
+        }
+        if (response.status < 300) {
+            setMaGiamGia(result)
+            setMess(null)
+            document.getElementById("totalfi").innerHTML = formatMoney(tongTien - result.discount + 20000)
+        }
+    
+    }
 
     return(
         <div class="row">
@@ -29,21 +81,19 @@ function Checkout(){
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                         <br/><span class="titlecheckout">Thông tin giao hàng</span>
                         <div class="col-12 formadd">
-                            <select onchange="loadAddInfor()" id="sodiachi" class="formcou fomd">
-                                <option value="" hidden="">---</option>
-                                <option value="haf npio">hà nội</option>
-                            </select>
+                            <Select
+                                options={diaChi}
+                                onChange={getDiaChi}
+                                getOptionLabel={(option) => option.fullname+", "+option.streetName+", "+option.wards.name+", "+option.wards.districts.name+", "+option.wards.districts.province.name} 
+                                getOptionValue={(option) => option.id}    
+                                closeMenuOnSelect={false}
+                                name='diachi'
+                                placeholder="Chọn địa chỉ"
+                            />
                         </div>
-                        <input readonly id="fullname" class="form-control fomd" placeholder="Họ tên"/>
-                        <input readonly id="phone" class="form-control fomd" placeholder="Số điện thoại"/>
-                        <input readonly id="stressName" class="form-control fomd" placeholder="Tên đường, số nhà"/>
-                        <div class="col-12 formadd">
-                            <select readonly id="chosprov" class="formcou fomd">
-                                <option value="" hidden="">---</option>
-                                <option value="haf npio">hà nội</option>
-                            </select>
-                            <label class="lbsatop">Tỉnh</label>
-                        </div>
+                        <input value={selectDiaChi?.fullname} readonly id="fullname" class="form-control fomd" placeholder="Họ tên"/>
+                        <input value={selectDiaChi?.phone} readonly id="phone" class="form-control fomd" placeholder="Số điện thoại"/>
+                        <textarea readonly id="stressName" class="form-control fomd" placeholder="Địa chỉ nhận"></textarea>
                         <textarea id="ghichudonhang" class="form-control fomd" placeholder="ghi chú"></textarea>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -91,35 +141,43 @@ function Checkout(){
             <div class="infordoncheck">
                 <span class="dhcheck">Đơn hàng (<span id="slcartcheckout">1</span> sản phẩm)</span>
                 <div id="listproductcheck">
-                    <div class="row">
+                {cart.map((item=>{
+                    return <div class="row">
                         <div class="col-lg-2 col-md-3 col-sm-3 col-3 colimgcheck">
-                            <img src="image/sp1.webp" class="procheckout"/>
-                            <span class="slpro">1</span>
+                            <img src={item.product.imageBanner} class="procheckout"/>
+                            <span class="slpro">{item.quantity}</span>
                         </div>
                         <div class="col-lg-7 col-md-6 col-sm-6 col-6">
-                            <span class="namecheck">Áo Polo Nam Mắt Chim Bo Hiệu Ứng Dệt Nổi</span>
-                            <span class="colorcheck">Vàng / M</span>
+                            <span class="namecheck">{item.product.name}</span>
+                            <span class="colorcheck">{item.color.colorName} / {item.size.sizeName}</span>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-3 pricecheck">
-                            <span>359.000đ</span>
+                            <span>{formatMoney(item.product.price * item.quantity)}</span>
                         </div>
                     </div>
+                    }))}
                 </div>
                 <div class="row magg">
                     <div class="col-8"><input id="codevoucher" class="form-control" placeholder="Nhập mã giảm giá"/></div>
-                    <div class="col-4"><button onclick="loadVoucher()" class="btnmagg">Áp dụng</button></div>
-                    <div class="col-12" id="blockmess">
+                    <div class="col-4"><button onClick={loadVoucher} class="btnmagg">Áp dụng</button></div>
+                    {maGiamGia && (
+                    <div class="col-12">
                         <span class="successvou">Mã giảm giá đã được áp dụng</span>
                     </div>
-                    <div class="col-12" id="blockmessErr">
-                        <br/><i class="fa fa-warning"> <span id="messerr">Mã giảm giá không khả dụng</span></i>
+                    )}
+                    {mess && (
+                    <div class="col-12">
+                        <div class="col-12">
+                            <br/><i class="fa fa-warning"> <span id="messerr">{mess}</span></i>
+                        </div>
                     </div>
+                    )}
                 </div>
                 <div class="magg">
                     <table class="table">
                         <tr>
                             <td>Tạm tính</td>
-                            <td class="colright" id="totalAmount">359.000đ</td>
+                            <td class="colright" id="totalAmount">{formatMoney(tongTien)}</td>
                         </tr>
                         <tr>
                             <td>Phí vận chuyển</td>
@@ -127,11 +185,11 @@ function Checkout(){
                         </tr>
                         <tr>
                             <td>Giảm giá</td>
-                            <td class="colright" id="moneyDiscount">0đ</td>
+                            <td class="colright" id="moneyDiscount">{maGiamGia == null?'0đ':maGiamGia.discount}</td>
                         </tr>
                         <tr>
                             <td>Tổng cộng</td>
-                            <td class="colright ylsbold" id="totalfi">379.000đ</td>
+                            <td class="colright ylsbold" id="totalfi">{formatMoney(tongTien + 20000)}</td>
                         </tr>
                     </table>
                     <button onclick="checkout()" class="btndathang">Đặt hàng</button>
