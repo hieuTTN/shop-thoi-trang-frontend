@@ -1,5 +1,6 @@
 import layoutAdmin from '../layout/admin/Layout'
 import layoutLogin from '../layout/user/loginlayout/login'
+import CheckoutLayout from '../layout/user/checkout/checkouLayout'
 
 //admin
 // import homeAdmin from '../pages/admin/index'
@@ -24,6 +25,7 @@ import BlogDetail from '../pages/public/blogdetail'
 import Account from '../pages/public/account'
 import Cart from '../pages/public/cart'
 import Product from '../pages/public/product'
+import Checkout from '../pages/public/checkout'
 
 const publicRoutes = [
     { path: "/", component: index},
@@ -39,6 +41,7 @@ const publicRoutes = [
     { path: "/account", component: Account},
     { path: "/cart", component: Cart},
     { path: "/product", component: Product},
+    { path: "/checkout", component: Checkout, layout:CheckoutLayout},
 ];
 
 

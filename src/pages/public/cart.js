@@ -121,7 +121,7 @@ return(
             <div class="ttcart">
                 <div class="tongdon">
                     <span class="tds">Tổng đơn: </span><span class="tonggiatien" id="tonggiatien">{formatMoney(tongTien)}</span>
-                    <button onclick="location.href='checkout'" class="btnthanhtoan">Thanh toán</button>
+                    <button onClick={()=>window.location.href = 'checkout'} class="btnthanhtoan">Thanh toán</button>
                 </div>
                 <p class="freeship">MIỄN PHÍ VẬN CHUYỂN VỚI ĐƠN HÀNG TỪ 498K</p>
                 <p>Mọi đơn hàng trên hệ thống sẽ được giảm giá phí vận chuyển chỉ còn <span class="buypl">20.000 VND</span></p>
