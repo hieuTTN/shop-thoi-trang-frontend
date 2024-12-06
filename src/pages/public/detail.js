@@ -2,7 +2,7 @@ import Footer from '../../layout/user/footer/footer'
 import banner from '../../assest/images/banner.jpg'
 import banner1 from '../../assest/images/banner1.png'
 import banner2 from '../../assest/images/banner2.jpg'
-import {getMethod,getMethodPostByToken,getMethodByToken} from '../../services/request'
+import {getMethod,getMethodPostByToken,getMethodByToken, postMethodPayload, uploadMultipleFile, deleteMethod} from '../../services/request'
 import {formatMoney} from '../../services/money'
 import {loadBanner} from '../../services/banner'
 import { useState, useEffect } from 'react'
@@ -38,14 +38,16 @@ function Detail(){
             setItemSize(result.productColors[0].productSizes)
         };
         getProduct();
-        const getComment = async() =>{
-            const response = await getMethod('/api/product-comment/public/find-by-product?idproduct=' + id);
-            var result = await response.json();
-            setComments(result)
-        };
         getComment();
   }, []);
-  
+  const getComment = async() =>{
+    var uls = new URL(document.URL)
+    var id = uls.searchParams.get("id");
+    const response = await getMethod('/api/product-comment/public/find-by-product?idproduct=' + id);
+    var result = await response.json();
+    setComments(result)
+};
+
   async function loadSize(color, index) {
     setselectIndexColor(index);
     setselectColor(color)
@@ -140,6 +142,52 @@ function Detail(){
             if(type != null && type != undefined) window.location.href = 'cart'
         }
     }
+
+    
+async function saveComment() {
+    // document.getElementById("loading").style.display = 'block'
+    var uls = new URL(document.URL)
+    var id = uls.searchParams.get("id");
+    var noidungbl = document.getElementById("noidungbl").value
+    if (document.getElementById("choosefilecmt").files.length > 3) {
+        toast.error("Chỉ được chọn tối đa 3 ảnh");
+        return;
+    }
+    var listLinkImg = await uploadMultipleFile(document.getElementById("choosefilecmt"));
+    var comment = {
+        "star": star,
+        "content": noidungbl,
+        "listLink": listLinkImg,
+        "product": {
+            "id": id
+        }
+    }
+    const response = await postMethodPayload('/api/product-comment/user/create', comment)
+    if (response.status < 300) {
+        toast.success("Thành công!")
+        getComment();
+        document.getElementById("noidungbl").value = "";
+    } else {
+        toast.error("Thất bại!");
+    }
+}
+
+async function deleteComment(id) {
+    var con = window.confirm("Bạn muốn xóa bình luận này?");
+    if (con == false) {
+        return;
+    }
+    const response = await deleteMethod('/api/product-comment/user/delete?id=' + id)
+    if (response.status < 300) {
+        toast.success("xóa thành công!");
+        getComment();
+    }
+    if (response.status == 417) {
+        var result = await response.json()
+        toast.warning(result.defaultMessage);
+    }
+}
+
 
 
     return(
@@ -247,6 +295,7 @@ function Detail(){
                                 <span class="usernamedangctl">{item.user.fullname}</span>
                                 <span class="ngaytraloi">{item.createdDate}</span>
                                 <span class="starcmts" dangerouslySetInnerHTML={{__html:star}}></span>
+                                {item.isMyComment==true?<span class="starcmts"><i onClick={()=>deleteComment(item.id)} class="fa fa-trash pointer"></i></span>:''}
                             </div>
                             <div class="contentctlct">{item.content}</div>
                             <div class="listimgcontent">
@@ -277,7 +326,7 @@ function Detail(){
                         <span id="errorquan">Chỉ được chọn tối đa 3 ảnh</span>
                         <input onChange={setFile} type="file" id="choosefilecmt" multiple/>
                     </div>
-                    <button onclick="saveComment()" class="btn btn-primary form-control">Binh luận</button>
+                    <button onClick={saveComment} class="btn btn-primary form-control">Binh luận</button>
                 </div>
                  )}
             </div>
