@@ -9,7 +9,7 @@ import AdminAddBlog from '../pages/admin/addblog'
 import AdminCategory from '../pages/admin/category'
 import AdminAddCategory from '../pages/admin/addcategory'
 import AdminProduct from '../pages/admin/product'
-// import AdminInvoice from '../pages/admin/invoice'
+import AdminAddProduct from '../pages/admin/addproduct'
 
 
 //public
@@ -54,7 +54,7 @@ const adminRoutes = [
     { path: "/admin/category", component: AdminCategory, layout: layoutAdmin },
     { path: "/admin/add-category", component: AdminAddCategory, layout: layoutAdmin },
     { path: "/admin/product", component: AdminProduct, layout: layoutAdmin },
-    // { path: "/admin/invoice", component: AdminInvoice, layout: layoutAdmin },
+    { path: "/admin/add-product", component: AdminAddProduct, layout: layoutAdmin },
 ];
 
 
