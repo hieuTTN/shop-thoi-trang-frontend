@@ -1,6 +1,30 @@
 import logofooter from '../../../assest/images/footer.png'
+import {formatMoney} from '../../../services/money'
 
 function footer(){
+    async function searchMenuMobile() {
+        var texts = document.getElementById("inputsearchmobile").value
+        if (texts.length == 0) {
+            document.getElementById("listproductsearchmobile").innerHTML = '';
+            return;
+        }
+        var url = 'http://localhost:8080/api/product/public/findByParam?page=0&size=50&q=' + texts;
+        const response = await fetch(url, {});
+        var result = await response.json();
+        var list = result.content;
+        var main = '';
+        for (var i = 0; i < list.length; i++) {
+            main += `<div class="singlesearch col-md-12">
+                        <div class="p40"><a href="detail?id=${list[i].id}&name=${list[i].alias}"><img class="imgprosearchp" src="${list[i].imageBanner}"></a></div>
+                        <div class="p60">
+                            <a href="detail?id=${list[i].id}&name=${list[i].alias}"><span class="tenspsearch">${list[i].name}</span><br>
+                            <span class="tenspsearch">${formatMoney(list[i].price)}</span></a>
+                        </div>
+                    </div>`
+        }
+        document.getElementById("listproductsearchmobile").innerHTML = main;
+    }
+
   return(
     <div id="footer">
       <footer class="text-center text-lg-start text-muted">
@@ -58,7 +82,7 @@ function footer(){
             </div>
             <div class="modal-body">
                 <div class="searchmenu searchsm">
-                    <input id="inputsearchmobile" onkeyup="searchMenuMobile()" class="imputsearchmenu" placeholder="Tìm kiếm sản phẩm..."/>
+                    <input id="inputsearchmobile" onKeyUp={()=>searchMenuMobile()} class="imputsearchmenu" placeholder="Tìm kiếm sản phẩm..."/>
                     <button class="btnsearchmenu"><i class="fa fa-search"></i></button>
                 </div>
 
