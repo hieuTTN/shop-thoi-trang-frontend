@@ -3,12 +3,12 @@ import layoutLogin from '../layout/user/loginlayout/login'
 import CheckoutLayout from '../layout/user/checkout/checkouLayout'
 
 //admin
-// import homeAdmin from '../pages/admin/index'
-// import userAdmin from '../pages/admin/user'
-// import AdminCateory from '../pages/admin/category'
-// import AdminDoanhThu from '../pages/admin/doanhthu'
-// import AdminProduct from '../pages/admin/product'
-// import AdminAddProduct from '../pages/admin/addproduct'
+import AdminIndex from '../pages/admin/index'
+import AdminBlog from '../pages/admin/blog'
+import AdminAddBlog from '../pages/admin/addblog'
+import AdminCategory from '../pages/admin/category'
+import AdminAddCategory from '../pages/admin/addcategory'
+import AdminProduct from '../pages/admin/product'
 // import AdminInvoice from '../pages/admin/invoice'
 
 
@@ -48,12 +48,12 @@ const publicRoutes = [
 
 
 const adminRoutes = [
-    // { path: "/admin/index", component: homeAdmin, layout: layoutAdmin },
-    // { path: "/admin/user", component: userAdmin, layout: layoutAdmin },
-    // { path: "/admin/category", component: AdminCateory, layout: layoutAdmin },
-    // { path: "/admin/doanhthu", component: AdminDoanhThu, layout: layoutAdmin },
-    // { path: "/admin/product", component: AdminProduct, layout: layoutAdmin },
-    // { path: "/admin/addproduct", component: AdminAddProduct, layout: layoutAdmin },
+    { path: "/admin/index", component: AdminIndex, layout: layoutAdmin },
+    { path: "/admin/blog", component: AdminBlog, layout: layoutAdmin },
+    { path: "/admin/add-blog", component: AdminAddBlog, layout: layoutAdmin },
+    { path: "/admin/category", component: AdminCategory, layout: layoutAdmin },
+    { path: "/admin/add-category", component: AdminAddCategory, layout: layoutAdmin },
+    { path: "/admin/product", component: AdminProduct, layout: layoutAdmin },
     // { path: "/admin/invoice", component: AdminInvoice, layout: layoutAdmin },
 ];
 
