@@ -14,6 +14,8 @@ function Checkout(){
     const [tongTien, setTongTien] = useState(0);
     const [maGiamGia, setMaGiamGia] = useState(null);
     const [mess, setMess] = useState(null);
+    const [loaiThanhToan, setLoaiThanhToan] = useState("PAYMENT_MOMO");
+    const [listSize, setListSize] = useState();
 
     useEffect(()=>{
         getDiaChiUser();
@@ -44,10 +46,17 @@ function Checkout(){
         }
         setCart(list)
         var tongTien = 0;
+        var sizes = [];
         for(var i=0; i< list.length; i++){
             tongTien += list[i].quantity * list[i].product.price
+            var obj = {
+                "idProductSize": list[i].size.id,
+                "quantity": list[i].quantity
+            }
+            sizes.push(obj);
         }
         setTongTien(tongTien)
+        setListSize(sizes)
     }
 
     async function loadVoucher() {
@@ -67,6 +76,114 @@ function Checkout(){
             document.getElementById("totalfi").innerHTML = formatMoney(tongTien - result.discount + 20000)
         }
     
+    }
+
+    function clickLoaiTt(loai){
+        if(loai == 1){
+            document.getElementById("momo").checked = true
+            setLoaiThanhToan("PAYMENT_MOMO")
+        }
+        if(loai == 2){
+            document.getElementById("vnpay").checked = true
+            setLoaiThanhToan("PAYMENT_VNPAY")
+        }
+        if(loai == 3){
+            document.getElementById("cod").checked = true
+            setLoaiThanhToan("PAYMENT_DELIVERY")
+        }
+    }
+
+    function checkout() {
+        var con = window.confirm("Xác nhận đặt hàng!");
+        if (con == false) {
+            return;
+        }
+        if(selectDiaChi == null){
+            toast.error("Hãy chọn 1 địa chỉ nhận hàng");
+            return;
+        }
+        if(maGiamGia == null) window.localStorage.removeItem('voucherCode');
+        if (loaiThanhToan == "PAYMENT_MOMO") {
+            requestPayMentMomo()
+        }
+        if (loaiThanhToan == "PAYMENT_DELIVERY") {
+            paymentCod();
+        }
+        if (loaiThanhToan == "PAYMENT_VNPAY") {
+            requestPayMentVnpay();
+        }
+    }
+
+
+    async function requestPayMentMomo() {
+        window.localStorage.setItem('ghichudonhang', document.getElementById("ghichudonhang").value);
+        window.localStorage.setItem('paytype', "MOMO");
+        window.localStorage.setItem('sodiachi', selectDiaChi.id);
+        if(maGiamGia != null) window.localStorage.setItem('voucherCode', maGiamGia.code);
+        var paymentDto = {
+            "content": "thanh toán đơn hàng yody",
+            "returnUrl": 'http://localhost:3000/payment',
+            "notifyUrl": 'http://localhost:3000/payment',
+            "listProductSize": listSize
+        }
+        console.log(paymentDto);
+        
+        if(maGiamGia != null) paymentDto.codeVoucher = maGiamGia.code
+        const res = await postMethodPayload('/api/urlpayment',paymentDto)
+        var result = await res.json();
+        if (res.status < 300) {
+            window.open(result.url, '_blank');
+        }
+        if (res.status == 417) {
+            toast.warning(result.defaultMessage);
+        }
+    
+    }
+    
+    
+    async function requestPayMentVnpay() {
+        window.localStorage.setItem('ghichudonhang', document.getElementById("ghichudonhang").value);
+        window.localStorage.setItem('paytype', "VNPAY");
+        window.localStorage.setItem('sodiachi', selectDiaChi.id);
+        if(maGiamGia != null) window.localStorage.setItem('voucherCode', maGiamGia.code);
+    
+        var paymentDto = {
+            "content": "thanh toán đơn hàng yody",
+            "returnUrl": 'http://localhost:3000/payment',
+            "notifyUrl": 'http://localhost:3000/payment',
+            "listProductSize": listSize
+        }
+        if(maGiamGia != null) paymentDto.codeVoucher = maGiamGia.code
+        const res = await postMethodPayload('/api/vnpay/urlpayment', paymentDto)
+        var result = await res.json();
+        if (res.status < 300) {
+            window.open(result.url, '_blank');
+        }
+        if (res.status == 417) {
+            toast.warning(result.defaultMessage);
+        }
+    
+    }
+    
+    async function paymentCod() {
+        var orderDto = {
+            "payType": "PAYMENT_DELIVERY",
+            "userAddressId": selectDiaChi.id,
+            "note": document.getElementById("ghichudonhang").value,
+            "listProductSize": listSize
+        }
+        if(maGiamGia != null) 
+            orderDto.voucherCode = maGiamGia.code
+        const res = await postMethodPayload('/api/invoice/user/create', orderDto)
+        if (res.status < 300) {
+            Swal.fire({
+                title: "Thông báo",
+                text: "Đặt hàng thành công!",
+                preConfirm: () => {
+                    window.location.replace("account#invoice")
+                }
+            });
+        }
     }
 
     return(
@@ -104,21 +221,21 @@ function Checkout(){
                         </div>
                         <br/><span class="titlecheckout">Thanh toán</span>
                         <table class="table tablepay">
-                            <tr onclick="momo.click()">
+                            <tr onClick={()=>clickLoaiTt(1)}>
                                 <td><label class="radiocustom">	Thanh toán qua Ví MoMo
                                         <input value="momo" id="momo" type="radio" name="paytype" checked="checked"/>
                                         <span class="checkmark"></span></label></td>
                                 <td><img src="image/momo.webp" class="momopay"/></td>
                             </tr>
-                            <tr onclick="vnpay.click()">
+                            <tr onClick={()=>clickLoaiTt(2)}>
                                 <td><label class="radiocustom">	Thanh toán qua Ví Vnpay
                                     <input value="vnpay" id="vnpay" type="radio" name="paytype"/>
                                     <span class="checkmark"></span></label></td>
                                 <td><img src="image/vnpay.jpg" class="momopay"/></td>
                             </tr>
-                            <tr onclick="code.click()">
+                            <tr onClick={()=>clickLoaiTt(3)}>
                                 <td><label class="radiocustom">	Thanh toán khi nhận hàng (COD)
-                                        <input value="cod" id="code" type="radio" name="paytype"/>
+                                        <input value="cod" id="cod" type="radio" name="paytype"/>
                                         <span class="checkmark"></span></label></td>
                                 <td><i class="fa fa-money paycode"></i></td>
                             </tr>
@@ -192,7 +309,7 @@ function Checkout(){
                             <td class="colright ylsbold" id="totalfi">{formatMoney(tongTien + 20000)}</td>
                         </tr>
                     </table>
-                    <button onclick="checkout()" class="btndathang">Đặt hàng</button>
+                    <button onClick={()=>checkout()} class="btndathang">Đặt hàng</button>
                 </div>
             </div>
         </div>

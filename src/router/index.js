@@ -26,6 +26,7 @@ import Account from '../pages/public/account'
 import Cart from '../pages/public/cart'
 import Product from '../pages/public/product'
 import Checkout from '../pages/public/checkout'
+import PublicPayment from '../pages/public/payment'
 
 const publicRoutes = [
     { path: "/", component: index},
@@ -42,6 +43,7 @@ const publicRoutes = [
     { path: "/cart", component: Cart},
     { path: "/product", component: Product},
     { path: "/checkout", component: Checkout, layout:CheckoutLayout},
+    { path: "/payment", component: PublicPayment},
 ];
 
 
