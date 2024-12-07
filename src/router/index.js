@@ -10,6 +10,11 @@ import AdminCategory from '../pages/admin/category'
 import AdminAddCategory from '../pages/admin/addcategory'
 import AdminProduct from '../pages/admin/product'
 import AdminAddProduct from '../pages/admin/addproduct'
+import AdminVoucher from '../pages/admin/voucher'
+import AdminAddVoucher from '../pages/admin/addvoucher'
+import AdminImport from '../pages/admin/importproduct'
+import AdminAddImport from '../pages/admin/addimportproduct'
+import AdminInvoice from '../pages/admin/invoice'
 
 
 //public
@@ -55,6 +60,11 @@ const adminRoutes = [
     { path: "/admin/add-category", component: AdminAddCategory, layout: layoutAdmin },
     { path: "/admin/product", component: AdminProduct, layout: layoutAdmin },
     { path: "/admin/add-product", component: AdminAddProduct, layout: layoutAdmin },
+    { path: "/admin/voucher", component: AdminVoucher, layout: layoutAdmin },
+    { path: "/admin/add-voucher", component: AdminAddVoucher, layout: layoutAdmin },
+    { path: "/admin/importproduct", component: AdminImport, layout: layoutAdmin },
+    { path: "/admin/add-importproduct", component: AdminAddImport, layout: layoutAdmin },
+    { path: "/admin/don-hang", component: AdminInvoice, layout: layoutAdmin },
 ];
 
 

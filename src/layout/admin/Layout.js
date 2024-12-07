@@ -71,11 +71,41 @@ function Header({ children }) {
                             <li><a href='add-product' className="text-decoration-none">Thêm sản phẩm</a></li>
                         </ul>
                     </li>
+                    <li className={isActive(["/admin/voucher", "/admin/add-voucher"])}>
+                        <a href="#colvoucher" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle text-white text-decoration-none">
+                        <i class="fa fa-ticket"></i> Quản lý voucher
+                        </a>
+                        <ul className="collapse list-unstyled childunl" id="colvoucher">
+                            <li><a href='voucher' className="text-decoration-none">Danh sách voucher</a></li>
+                            <li><a href='add-voucher' className="text-decoration-none">Thêm voucher</a></li>
+                        </ul>
+                    </li>
+                    <li className={isActive(["/admin/banner"])}>
+                        <a href="#colbanner" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle text-white text-decoration-none">
+                        <i class="fas fa-image"></i> Quản lý banner
+                        </a>
+                        <ul className="collapse list-unstyled childunl" id="colbanner">
+                            <li><a href='banner' className="text-decoration-none">Danh sách voucher</a></li>
+                        </ul>
+                    </li>
+                    <li className={isActive(["/admin/importproduct", "/admin/add-importproduct"])}>
+                        <a href="#colimport" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle text-white text-decoration-none">
+                        <i class="fa fa-file"></i> Quản lý nhập hàng
+                        </a>
+                        <ul className="collapse list-unstyled childunl" id="colimport">
+                            <li><a href='importproduct' className="text-decoration-none">Danh sách nhập hàng</a></li>
+                            <li><a href='add-importproduct' className="text-decoration-none">Thêm nhập hàng</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="don-hang" className="text-white text-decoration-none">
+                            <i className="fas fa-list"></i> Đơn hàng
+                        </a>
+                    </li>
                     <li>
                         <a href="#" onClick={logout} className="text-white text-decoration-none">
                             <i className="fa fa-sign-out me-2"></i> Logout
                         </a>
-                    
                     </li>
                 </ul>
             </nav>
