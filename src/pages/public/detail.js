@@ -20,6 +20,7 @@ function Detail(){
     const [selectColor, setselectColor] = useState(null);
     const [selectIndexColor, setselectIndexColor] = useState(0);
     const [selectIndexSize, setselectIndexSize] = useState(-1);
+    const [imgchinh, setImgChinh] = useState("");
 
     var star = 5;
     useEffect(()=>{
@@ -29,6 +30,7 @@ function Detail(){
             const response = await getMethod('/api/product/public/findById?id=' + id);
             var result = await response.json();
             setProduct(result)
+            setImgChinh(result.imageBanner)
             setselectColor(result.productColors[0])
             setItemSize(result.productColors[0].productSizes)
         };
@@ -190,11 +192,11 @@ async function deleteComment(id) {
     <div class="content">
         <div class="row contentdetailproduct">
             <div class="col-lg-3 col-md-5 col-sm-12 col-12">
-                <img id="imgdetailpro" src={product?.imageBanner} class="imgdetailpro"/>
+                <img id="imgdetailpro" src={imgchinh} class="imgdetailpro"/>
                 <div class="listimgdetail row" id="listimgdetail">
                 {product?.productImages.map((item=>{
                     return <div class="col-lg-2 col-md-2 col-sm-2 col-2 singdimg">
-                        <img onclick="clickImgdetail(this)" src={item.linkImage} class="imgldetail"/>
+                        <img onClick={()=>setImgChinh(item.linkImage)} src={item.linkImage} class="imgldetail"/>
                     </div>
                 }))}
                 </div>
@@ -206,7 +208,7 @@ async function deleteComment(id) {
                     <span class="quansale" id="quansale">Đã bán {product?.quantitySold}</span>
                 </div>
                 <p class="pricedetail" id="pricedetail">{formatMoney(product?.price)}</p>
-                <span class="colordetail">Màu sắc: <span class="colorname" id="colorname">{product?.productColors[0].colorName}</span></span>
+                <span class="colordetail">Màu sắc: <span class="colorname" id="colorname">{selectColor?.colorName}</span></span>
                 <div class="listimgdetail row" id="listimgColor">
                 {product?.productColors.map((item, index)=>{
                     return <div class="col-lg-2 col-md-2 col-sm-2 col-2 singdimg">

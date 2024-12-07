@@ -121,7 +121,7 @@ const AdminProduct = ()=>{
                                     <td>{item.createdDate}</td>
                                     <td>{item.quantitySold}</td>
                                     <td class="sticky-col">
-                                        <a href={'add-blog?id='+item.id} class="edit-btn"><i className='fa fa-edit'></i></a>
+                                        <a href={'add-product?id='+item.id} class="edit-btn"><i className='fa fa-edit'></i></a>
                                         <button onClick={()=>deleteData(item.id)} class="delete-btn"><i className='fa fa-trash'></i></button>
                                     </td>
                                 </tr>
