@@ -15,6 +15,7 @@ import AdminAddVoucher from '../pages/admin/addvoucher'
 import AdminImport from '../pages/admin/importproduct'
 import AdminAddImport from '../pages/admin/addimportproduct'
 import AdminInvoice from '../pages/admin/invoice'
+import AdminBanner from '../pages/admin/banner'
 
 
 //public
@@ -65,6 +66,7 @@ const adminRoutes = [
     { path: "/admin/importproduct", component: AdminImport, layout: layoutAdmin },
     { path: "/admin/add-importproduct", component: AdminAddImport, layout: layoutAdmin },
     { path: "/admin/don-hang", component: AdminInvoice, layout: layoutAdmin },
+    { path: "/admin/banner", component: AdminBanner, layout: layoutAdmin },
 ];
 
 
