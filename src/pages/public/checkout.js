@@ -61,19 +61,19 @@ function Checkout(){
 
     async function loadVoucher() {
         var code = document.getElementById("codevoucher").value
-        var url = 'http://localhost:8080/api/voucher/public/findByCode?code=' + code + '&amount=' + (tongTien - Number(20000));
+        var url = 'http://localhost:8080/api/voucher/public/findByCode?code=' + code + '&amount=' + (tongTien);
         const response = await fetch(url, {});
         var result = await response.json();
         if (response.status == 417) {
             setMaGiamGia(null)
             setMaGiamGia(null)
             setMess(result.defaultMessage)
-            document.getElementById("totalfi").innerHTML = formatMoney(tongTien + 20000)
+            document.getElementById("totalfi").innerHTML = formatMoney(tongTien)
         }
         if (response.status < 300) {
             setMaGiamGia(result)
             setMess(null)
-            document.getElementById("totalfi").innerHTML = formatMoney(tongTien - result.discount + 20000)
+            document.getElementById("totalfi").innerHTML = formatMoney(tongTien - result.discount)
         }
     
     }
@@ -217,7 +217,7 @@ function Checkout(){
                         <br/><span class="titlecheckout">Vận chuyển</span>
                         <div class="feevc">
                             <label for="checkvc">Phí vận chuyển</label>
-                            <span class="tows">20.000đ</span>
+                            <span class="tows">Miễn phí</span>
                         </div>
                         <br/><span class="titlecheckout">Thanh toán</span>
                         <table class="table tablepay">
@@ -298,7 +298,7 @@ function Checkout(){
                         </tr>
                         <tr>
                             <td>Phí vận chuyển</td>
-                            <td class="colright">20.000đ</td>
+                            <td class="colright">Miễn phí</td>
                         </tr>
                         <tr>
                             <td>Giảm giá</td>
@@ -306,7 +306,7 @@ function Checkout(){
                         </tr>
                         <tr>
                             <td>Tổng cộng</td>
-                            <td class="colright ylsbold" id="totalfi">{formatMoney(tongTien + 20000)}</td>
+                            <td class="colright ylsbold" id="totalfi">{formatMoney(tongTien)}</td>
                         </tr>
                     </table>
                     <button onClick={()=>checkout()} class="btndathang">Đặt hàng</button>

@@ -250,7 +250,7 @@ return(
                                     <td onClick={()=>getChiTietDon(item)}><a data-bs-toggle="modal" data-bs-target="#modaldeail" class="yls pointer-event">#{item.id}</a></td>
                                     <td class="floatr">{item.createdTime} {item.createdDate}</td>
                                     <td>{item.address}</td>
-                                    <td class="floatr"><span class="yls">{formatMoney(item.totalAmount + 20000)}</span></td>
+                                    <td class="floatr"><span class="yls">{formatMoney(item.totalAmount)}</span></td>
                                     <td>
                                     {item.payType != 'PAYMENT_DELIVERY'?<span class="dathanhtoan">Đã thanh toán</span>:<span class="chuathanhtoan">Chưa thanh toán</span>}
                                     </td>

@@ -85,7 +85,7 @@ function Header({ children }) {
                         <i class="fas fa-image"></i> Quản lý banner
                         </a>
                         <ul className="collapse list-unstyled childunl" id="colbanner">
-                            <li><a href='banner' className="text-decoration-none">Danh sách voucher</a></li>
+                            <li><a href='banner' className="text-decoration-none">Danh sách banner</a></li>
                         </ul>
                     </li>
                     <li className={isActive(["/admin/importproduct", "/admin/add-importproduct"])}>

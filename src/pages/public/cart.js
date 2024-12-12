@@ -123,8 +123,8 @@ return(
                     <span class="tds">Tổng đơn: </span><span class="tonggiatien" id="tonggiatien">{formatMoney(tongTien)}</span>
                     <button onClick={()=>window.location.href = 'checkout'} class="btnthanhtoan">Thanh toán</button>
                 </div>
-                <p class="freeship">MIỄN PHÍ VẬN CHUYỂN VỚI ĐƠN HÀNG TỪ 498K</p>
-                <p>Mọi đơn hàng trên hệ thống sẽ được giảm giá phí vận chuyển chỉ còn <span class="buypl">20.000 VND</span></p>
+                <p class="freeship">MIỄN PHÍ VẬN CHUYỂN VỚI MỌI ĐƠN HÀNG</p>
+                <p>Mọi đơn hàng trên hệ thống sẽ được miễn phí vận chuyển</p>
             </div>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-12 col-12 colgoiycart">

@@ -1,6 +1,7 @@
 import logofooter from '../../../assest/images/footer.png'
 import {formatMoney} from '../../../services/money'
 
+
 function footer(){
     async function searchMenuMobile() {
         var texts = document.getElementById("inputsearchmobile").value
@@ -92,6 +93,7 @@ function footer(){
         </div>
         </div>
     </div>
+
     </div>
   );
 }

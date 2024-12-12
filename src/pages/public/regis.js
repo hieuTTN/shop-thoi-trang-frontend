@@ -9,6 +9,11 @@ async function regisAction(event) {
     var fullname = document.getElementById("fullname").value
     var phone = document.getElementById("phone").value
     var password = document.getElementById("password").value
+    var repassword = document.getElementById("repassword").value
+    if(password != repassword){
+        toast.error("Mật khẩu không trùng khớp")
+        return;
+    }
     var user = {
         "fullname": fullname,
         "email": email,
@@ -41,6 +46,7 @@ function regis(){
                 <input id="phone" placeholder="Số điện thoại" class="inputform"/>
                 <input id="email" placeholder="Địa chỉ email" class="inputform" type="email" required/>
                 <input id="password" placeholder="Mật khẩu" class="inputform" type="password" required/>
+                <input id="repassword" placeholder="Nhập lại mật khẩu" class="inputform" type="password" required/>
                 <button class="btndn">Đăng Ký</button>
                 <p class="nothvaccount"><span>Bạn đã có tài khoản? </span><a href="login" class="aquenmk">Đăng nhập ngay</a></p>
             </form>
